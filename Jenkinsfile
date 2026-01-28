@@ -23,11 +23,8 @@ pipeline {
 
         stage('Run Selenium Tests') {
             steps {
-                sh '''
-                mvn test \
-                -Dtest=FileUpload,Practice
-                '''
-            }
+                bat 'mvn test -Dtest=FileUpload,Practice'
+                  }
         }
     }
 
