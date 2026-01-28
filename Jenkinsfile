@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK17'
-        maven 'Maven3'
+        jdk 'JDK17'        // change to your Jenkins JDK name
+        maven 'Maven3'     // change to your Jenkins Maven name
     }
 
     stages {
@@ -15,22 +15,31 @@ pipeline {
             }
         }
 
-        stage('Build & Test') {
+        stage('Clean & Build') {
             steps {
-                sh 'mvn clean test'
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                sh '''
+                mvn test \
+                -Dtest=FileUpload,Practice
+                '''
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline execution completed'
+            echo 'Build Finished'
         }
         success {
-            echo 'Build & Tests passed'
+            echo 'Tests Passed'
         }
         failure {
-            echo 'Build or Tests failed'
+            echo 'Tests Failed'
         }
     }
 }
